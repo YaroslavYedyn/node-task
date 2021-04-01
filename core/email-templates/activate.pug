@@ -1,0 +1,9 @@
+extends template
+block content
+    div
+        | Привіт #{name} любий друже.
+        | Будь ласка, активуй свій обліковий запис, щоб продовжити.
+        br
+        | Щоб активувати перейди за посиланням
+        -let url = 'http://localhost:4200/auth/activate?token='
+        a(href=url + token) Клік!
