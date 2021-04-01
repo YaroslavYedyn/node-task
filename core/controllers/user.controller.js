@@ -32,20 +32,13 @@ module.exports = {
                     password, activate_token, email, username
                 }, avatar
             } = req;
-            let uploadPath = '';
 
             const passwordHash = await passwordHelper.hash(password);
 
             if (avatar) {
-                uploadPath = await fileService.downloadFile(avatar, FILE_FOLDER_NAME.PHOTOS, 'user');
-                console.log(uploadPath);
-                const avatarPath = uploadPath.split('\\')
-                    .join('/');
-                console.log(avatarPath);
-                req.user = {
-                    ...req.user,
-                    avatar: avatarPath
-                };
+                const uploadPath = await fileService.downloadFile(avatar, FILE_FOLDER_NAME.PHOTOS, 'user');
+                const avatarPath = uploadPath.split('\\').join('/');
+                req.user = { ...req.user, avatar: avatarPath };
             }
             await userService.createUser({
                 ...req.user,
@@ -65,11 +58,19 @@ module.exports = {
     },
     updateUserById: async (req, res, next) => {
         try {
-            const { params: { id }, body } = req;
+            const { user, avatar } = req;
 
-            const user = await userService.updateUser({ _id: id }, body);
+            if (avatar) {
+                await fileService.deleteFile(user.avatar);
+                const uploadPath = await fileService.downloadFile(avatar, FILE_FOLDER_NAME.PHOTOS, 'user');
+                const avatarPath = uploadPath.split('\\').join('/');
+                req.body = { ...req.body, avatar: avatarPath };
+            }
+            console.log(req.body);
+            console.log(user);
+            const updateUser = await userService.updateUser({ _id: user._id }, req.body);
 
-            res.json(user);
+            res.json(updateUser);
         } catch (e) {
             next(e);
         }

@@ -12,8 +12,7 @@ module.exports = async (req, res, next) => {
             throw new ErrorHandler(errorCodes.BAD_REQUEST, NO_TOKEN.customCode, 'Wrong token!');
         }
 
-        const user = await userService.getSingleUser({ activate_token: token })
-            .select('+activate_token');
+        const user = await userService.getSingleUser({ activate_token: token }).select('+activate_token,');
 
         if (!user) {
             throw new ErrorHandler(errorCodes.BAD_REQUEST, WRONG_TOKEN.customCode, 'Wrong token!');
