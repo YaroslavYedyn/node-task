@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const { magicString: { DATA_BASE_TABLE: { O_AUTH } } } = require('../../constants');
+const { magicString: { DATA_BASE_TABLE: { O_AUTH, USER } } } = require('../../constants');
 
 const o_authSchema = new Schema({
     access_token: {
@@ -12,8 +12,8 @@ const o_authSchema = new Schema({
         required: true
     },
     user_id: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: USER
     }
 }, {
     timestamps: true,

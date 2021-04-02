@@ -37,8 +37,12 @@ module.exports = {
 
             if (avatar) {
                 const uploadPath = await fileService.downloadFile(avatar, FILE_FOLDER_NAME.PHOTOS, 'user');
-                const avatarPath = uploadPath.split('\\').join('/');
-                req.user = { ...req.user, avatar: avatarPath };
+                const avatarPath = uploadPath.split('\\')
+                    .join('/');
+                req.user = {
+                    ...req.user,
+                    avatar: avatarPath
+                };
             }
             await userService.createUser({
                 ...req.user,
@@ -63,12 +67,15 @@ module.exports = {
             if (avatar) {
                 await fileService.deleteFile(user.avatar);
                 const uploadPath = await fileService.downloadFile(avatar, FILE_FOLDER_NAME.PHOTOS, 'user');
-                const avatarPath = uploadPath.split('\\').join('/');
-                req.body = { ...req.body, avatar: avatarPath };
+                const avatarPath = uploadPath.split('\\')
+                    .join('/');
+                req.body = {
+                    ...req.body,
+                    avatar: avatarPath
+                };
             }
-            console.log(req.body);
-            console.log(user);
-            const updateUser = await userService.updateUser({ _id: user._id }, req.body);
+            await userService.updateUser({ _id: user._id }, req.body);
+            const updateUser = await userService.getSingleUser({ _id: user._id });
 
             res.json(updateUser);
         } catch (e) {
@@ -80,10 +87,27 @@ module.exports = {
             const { params: { id } } = req;
 
             const user = await userService.removeUser({ _id: id });
-            console.log(user);
             await fileService.deleteFile(user.avatar);
 
             res.json(user);
+        } catch (e) {
+            next(e);
+        }
+    },
+    forgotPassword: async (req, res, next) => {
+        try {
+            const { user, password } = req;
+
+            const passwordHash = await passwordHelper.hash(password);
+
+            console.log(user._id);
+            console.log(passwordHash);
+            await userService.updateUser({ _id: user._id }, {
+                forgot_token: null,
+                password: passwordHash
+            });
+
+            res.json('UPDATED').status(200);
         } catch (e) {
             next(e);
         }

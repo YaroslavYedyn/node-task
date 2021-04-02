@@ -30,6 +30,10 @@ const userSchema = new Schema({
         type: String,
         select: false
     },
+    forgot_token: {
+        type: String,
+        select: false
+    },
     activate_status: { type: Boolean }
 }, {
     timestamps: true,

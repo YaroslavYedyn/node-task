@@ -1,0 +1,9 @@
+extends template
+block content
+    div
+        | Привіт .
+        | Нам був надісланий запит на скидання пароля.
+        br
+        | Щоб скинути пароль перейди за посиланням
+        -let url = 'http://localhost:4200/auth/changePassword?token='
+        a(href=url + token) Клік!

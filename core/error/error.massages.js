@@ -12,6 +12,9 @@ module.exports = {
     BODY_NOT_VALID: {
         customCode: 4005
     },
+    EMAIL_NOT_VALID: {
+        customCode: 40011
+    },
     MAX_SIZE_DOC: {
         customCode: 4009
     },

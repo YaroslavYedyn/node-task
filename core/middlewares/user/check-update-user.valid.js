@@ -14,6 +14,7 @@ module.exports = async (req, res, next) => {
 
         const { error } = userValidator.updateUserValidator.validate(req.body);
 
+        console.log(error);
         if (error) {
             throw new ErrorHandler(errorCodes.BAD_REQUEST, errorMessages.BODY_NOT_VALID.customCode, 'Body not valid!');
         }

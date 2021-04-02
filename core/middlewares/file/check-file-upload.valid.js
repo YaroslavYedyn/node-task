@@ -8,6 +8,8 @@ const { ErrorHandler, errorCodes, errorMessages: { FILE_NOT_VALID } } = require(
 module.exports = (req, res, next) => {
     try {
         const { files } = req;
+        console.log(req.body);
+        console.log(req.files);
         const photos = [];
 
         if (files) {
