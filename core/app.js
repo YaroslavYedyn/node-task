@@ -9,6 +9,7 @@ const cors = require('cors');
 
 const { PORT, URL_MONGO } = require('./config/config');
 const { apiRouter, notFound } = require('./routes');
+const cronRun = require('./cron-jobs');
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use('*', (err, req, res, next) => {
 
 app.listen(PORT, () => {
     console.log(`App listen ${PORT}`);
+    cronRun();
 });
 
 function _connectDb() {
