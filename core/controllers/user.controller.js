@@ -1,4 +1,4 @@
-const { userService, emailService, fileService } = require('../services');
+const { userService, emailService, fileService, authService } = require('../services');
 const { passwordHelper } = require('../helpers');
 const { emailActions, magicString: { FILE_FOLDER_NAME } } = require('../constants');
 
@@ -86,6 +86,7 @@ module.exports = {
         try {
             const { params: { id } } = req;
 
+            await authService.deleteToken({ user_id: id });
             const user = await userService.removeUser({ _id: id });
             await fileService.deleteFile(user.avatar);
 
