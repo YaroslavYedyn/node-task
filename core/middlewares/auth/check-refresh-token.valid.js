@@ -15,6 +15,7 @@ module.exports = async (req, res, next) => {
                 throw new ErrorHandler(errorCodes.FORBIDDEN, errorMessages.NO_TOKEN.customCode, 'Token not valid!');
             }
         }
+        console.log(token);
 
         if (!token) {
             throw new ErrorHandler(errorCodes.FORBIDDEN, errorMessages.NO_TOKEN.customCode, 'Token not valid!');
@@ -22,6 +23,7 @@ module.exports = async (req, res, next) => {
 
         const isExist = await authService.getTokensByParams({ refresh_token: token }, 'user_id');
 
+        console.log(isExist);
         if (!isExist) {
             throw new ErrorHandler(errorCodes.FORBIDDEN, errorMessages.WRONG_TOKEN.customCode, 'Token not valid!');
         }

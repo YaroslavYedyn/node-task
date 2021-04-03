@@ -107,7 +107,8 @@ module.exports = {
                 password: passwordHash
             });
 
-            res.json('UPDATED').status(200);
+            res.json('UPDATED')
+                .status(200);
         } catch (e) {
             next(e);
         }

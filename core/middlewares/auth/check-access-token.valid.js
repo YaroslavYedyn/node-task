@@ -9,7 +9,6 @@ module.exports = async (req, res, next) => {
     try {
         const token = req.get(AUTHORIZATION);
 
-        console.log(token);
 
         if (!token) {
             throw new ErrorHandler(errorCodes.FORBIDDEN, errorMessages.NO_TOKEN.customCode, 'Token not valid!');
