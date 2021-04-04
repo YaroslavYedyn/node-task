@@ -1,3 +1,4 @@
 module.exports = {
-    jwtSecret: require('./jwtSecret')
+    config: require('./config'),
+    jwtSecret: require('./jwtSecret'),
 };

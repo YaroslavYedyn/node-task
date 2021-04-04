@@ -2,22 +2,34 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const path = require('path');
-const dotenv = require('dotenv')
-    .config();
+const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
 
-const { PORT, URL_MONGO } = require('./config/config');
+const { PORT, URL_MONGO, ALLOWED_ORIGIN } = require('./config/config');
 const { apiRouter, notFound } = require('./routes');
 const cronRun = require('./cron-jobs');
 
 const app = express();
+dotenv.config();
 
-app.use(cors());
+const configureCors = (origin, callback) => {
+    const whiteList = ALLOWED_ORIGIN.split(';');
+
+    if (!origin) {
+        return callback(null, true);
+    }
+
+    if (!whiteList.includes(origin)) {
+        return callback(new Error('Cors not allowed'), false);
+    }
+
+    return callback(null, true);
+};
+
+app.use(cors({ origin: configureCors }));
 
 _connectDb();
-
-console.log(dotenv);
 
 app.use(express.json());
 app.use(morgan('dev'));
