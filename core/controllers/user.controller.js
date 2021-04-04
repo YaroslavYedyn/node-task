@@ -1,3 +1,4 @@
+const { successMessages } = require('../error');
 const { userService, emailService, fileService, authService } = require('../services');
 const { passwordHelper } = require('../helpers');
 const { emailActions, magicString: { FILE_FOLDER_NAME } } = require('../constants');
@@ -84,13 +85,27 @@ module.exports = {
     },
     removeUserById: async (req, res, next) => {
         try {
-            const { params: { id } } = req;
+            const { params: { id }, user } = req;
 
             await authService.deleteToken({ user_id: id });
-            const user = await userService.removeUser({ _id: id });
+            await userService.removeUser({ _id: id });
             await fileService.deleteFile(user.avatar);
 
             res.json(user);
+        } catch (e) {
+            next(e);
+        }
+    },
+    changePassword: async (req, res, next) => {
+        try {
+            const { body: { new_password }, user } = req;
+
+            const passwordHash = await passwordHelper.hash(new_password);
+
+            await userService.updateUser({ _id: user._id }, { password: passwordHash });
+
+            res.json(successMessages.UPDATE)
+                .status(201);
         } catch (e) {
             next(e);
         }
@@ -108,7 +123,7 @@ module.exports = {
                 password: passwordHash
             });
 
-            res.json('UPDATED')
+            res.json(successMessages.UPDATE)
                 .status(200);
         } catch (e) {
             next(e);

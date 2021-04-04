@@ -5,5 +5,5 @@ module.exports = {
     getSingleUser: (query) => User.findOne(query),
     createUser: (user) => User.create(user),
     updateUser: (query, updateBody) => User.updateOne(query, updateBody),
-    removeUser: (query) => User.findByIdAndRemove(query),
+    removeUser: (query) => User.delete(query),
 };

@@ -26,8 +26,7 @@ module.exports = {
                 token: forgot_token
             });
 
-            res.json('Please check email')
-                .status(200);
+            res.json('Please check email').status(200);
         } catch (e) {
             next(e);
         }

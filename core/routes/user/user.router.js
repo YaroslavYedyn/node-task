@@ -1,5 +1,4 @@
-const router = require('express')
-    .Router();
+const router = require('express').Router();
 
 const { userController } = require('../../controllers');
 const { userMiddleware, fileMiddleware, authMiddleware } = require('../../middlewares');
@@ -17,7 +16,9 @@ router.put('/:id',
     fileMiddleware.checkAvatar,
     userMiddleware.checkUpdateUser,
     userController.updateUserById);
+router.patch('/:id', authMiddleware.checkAccessToken, userMiddleware.checkIsChangePassword, userController.changePassword);
 router.delete('/:id', authMiddleware.checkAccessToken, userController.removeUserById);
 
 router.post('/forgotPassword', userMiddleware.checkIsForgotPassword, userController.forgotPassword);
+
 module.exports = router;

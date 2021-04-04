@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const mongooseDelete = require('mongoose-delete');
 
 const { magicString: { DATA_BASE_TABLE: { USER } } } = require('../../constants');
 
@@ -41,4 +42,8 @@ const userSchema = new Schema({
     toJSON: { virtuals: true }
 });
 
+userSchema.plugin(mongooseDelete, {
+    overrideMethods: 'all',
+    deletedAt: true
+});
 module.exports = model(USER, userSchema);

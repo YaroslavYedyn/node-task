@@ -11,13 +11,12 @@ module.exports = async (req, res, next) => {
             throw new ErrorHandler(errorCodes.BAD_REQUEST, errorMessages.WRONG_TOKEN.customCode, 'Forgot token not valid!');
         }
 
-        const { error } = userValidator.changePasswordValidator.validate(password);
+        const { error } = userValidator.forgotPasswordValidator.validate(password);
 
         if (error) {
             throw new ErrorHandler(errorCodes.BAD_REQUEST, errorMessages.BODY_NOT_VALID, 'Body not valid!');
         }
 
-        console.log(user);
         req.user = user;
         req.forgot_token = forgot_token;
         req.password = password;
@@ -26,4 +25,3 @@ module.exports = async (req, res, next) => {
         next(e);
     }
 };
-
