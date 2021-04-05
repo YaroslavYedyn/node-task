@@ -2,7 +2,7 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const mongoose = require('mongoose');
 const path = require('path');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
 const morgan = require('morgan');
 const cors = require('cors');
 
@@ -11,7 +11,6 @@ const { apiRouter, notFound } = require('./routes');
 const cronRun = require('./cron-jobs');
 
 const app = express();
-dotenv.config();
 
 const configureCors = (origin, callback) => {
     const whiteList = ALLOWED_ORIGIN.split(';');
@@ -28,6 +27,7 @@ const configureCors = (origin, callback) => {
 };
 
 app.use(cors({ origin: configureCors }));
+console.log(dotenv);
 
 _connectDb();
 
